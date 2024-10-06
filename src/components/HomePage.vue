@@ -62,6 +62,7 @@ export default {
     // 提醒用户
     remind() {
       if (this.requireConfirmation) {
+        this.sendNotification(this.task);
         this.$confirm(`提醒：${this.task}`, '任务提醒', {
           confirmButtonText: '知道了！',
           cancelButtonText: '稍后提醒',
@@ -77,6 +78,7 @@ export default {
           message: this.task,
           type: 'info',
         });
+        this.sendNotification(this.task);
         this.startReminder(); // 无需确认时直接继续提醒
       }
     },
@@ -91,6 +93,14 @@ export default {
         }
       }, 1000); // 每秒更新一次
     },
+    sendNotification (task) {
+      const myNotification = new Notification('喝水提醒小工具', {
+        body: '提醒您，该' + task + '啦~'
+      })
+      myNotification.onclick = () => {
+        console.log('通知被点击')
+      }
+    }
   },
   beforeUnmount() {
     // 组件销毁时清除所有定时器
